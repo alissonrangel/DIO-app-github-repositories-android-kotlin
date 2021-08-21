@@ -2,6 +2,7 @@ package br.com.dio.app.repositories.presentation.di
 
 import br.com.dio.app.repositories.domain.ListUserRepositoriesUseCase
 import br.com.dio.app.repositories.presentation.MainViewModel
+import br.com.dio.app.repositories.presentation.SecondViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -18,6 +19,17 @@ object PresentationModule {
             viewModel {
                 MainViewModel(get())
             }
+            viewModel {
+                SecondViewModel(get())
+            }
         }
     }
+
+//    private fun viewModelModule2(): Module {
+//        return module {
+//            viewModel {
+//                SecondViewModel(get())
+//            }
+//        }
+//    }
 }

@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="@id/iv_owner"
             app:layout_constraintBottom_toBottomOf="@id/iv_owner"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Tirar"
+            android:text="Tirar"
             />
         <TextView
             android:id="@+id/tv_repo_name"
