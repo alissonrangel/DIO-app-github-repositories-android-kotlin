@@ -17,11 +17,11 @@ object PresentationModule {
     private fun viewModelModule(): Module {
         return module {
             viewModel {
-                MainViewModel(get())
+                MainViewModel(get(), get())
             }
-            viewModel {
-                SecondViewModel(get())
-            }
+//            viewModel {
+//                SecondViewModel(get())
+//            }
         }
     }
 

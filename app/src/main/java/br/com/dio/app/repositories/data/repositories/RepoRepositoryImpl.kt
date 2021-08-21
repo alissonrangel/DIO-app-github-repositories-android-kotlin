@@ -16,7 +16,7 @@ class RepoRepositoryImpl(
             val repoList = service.listRepositories(user)
             emit(repoList)
         }catch (ex: HttpException){
-            throw RemoteException(ex.message() ?: "Não foi possível a busca no momento.")
+            throw RemoteException(ex.message ?: "Não foi possível a busca no momento.")
         }
 
     }
@@ -26,7 +26,9 @@ class RepoRepositoryImpl(
             val owner = service.listUserInfos(user)
             emit(owner)
         }catch (ex: HttpException){
-            throw RemoteException(ex.message() ?: "Não foi possível a busca no momento.")
+            throw RemoteException(ex.message ?: "Não foi possível a busca no momento.")
+        }catch (ex: Throwable){
+            throw RemoteException(ex.message ?: "Erro na busca.")
         }
     }
 }

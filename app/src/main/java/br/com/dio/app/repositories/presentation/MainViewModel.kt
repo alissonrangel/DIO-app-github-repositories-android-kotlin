@@ -15,14 +15,15 @@ import kotlinx.coroutines.launch
 
 
 class MainViewModel(
-    private val listUserRepositoriesUseCase: ListUserRepositoriesUseCase
+    private val listUserRepositoriesUseCase: ListUserRepositoriesUseCase,
+    private val listUserInfosUseCase: ListUserInfosUseCase
 ) : ViewModel() {
 
     private val _repos = MutableLiveData<State>()
     val repos: LiveData<State> = _repos
 
-//    private val _owner = MutableLiveData<State2>()
-//    val owner: LiveData<State2> = _owner
+    private val _owner = MutableLiveData<State2>()
+    val owner: LiveData<State2> = _owner
 
     fun getRepoList(user: String){
         viewModelScope.launch {
@@ -38,19 +39,19 @@ class MainViewModel(
         }
     }
 
-//    fun getUserInfos(user: String){
-//        viewModelScope.launch {
-//            listUserInfosUseCase(user)
-//                .onStart {
-//                    _owner.postValue(State2.Loading)
-//                }.catch {
-//                    _owner.postValue(State2.Error(it))
-//                }
-//                .collect {
-//                    _owner.postValue(State2.Success(it))
-//                }
-//        }
-//    }
+    fun getUserInfos(user: String){
+        viewModelScope.launch {
+            listUserInfosUseCase(user)
+                .onStart {
+                    _owner.postValue(State2.Loading)
+                }.catch {
+                    _owner.postValue(State2.Error(it))
+                }
+                .collect {
+                    _owner.postValue(State2.Success(it))
+                }
+        }
+    }
 
     sealed class State {
         object Loading : State()
@@ -58,9 +59,9 @@ class MainViewModel(
         data class Error(val error: Throwable) : State()
     }
 
-//    sealed class State2 {
-//        object Loading : State2()
-//        data class Success(val owner: Owner) : State2()
-//        data class Error(val error: Throwable) : State2()
-//    }
+    sealed class State2 {
+        object Loading : State2()
+        data class Success(val owner: Owner) : State2()
+        data class Error(val error: Throwable) : State2()
+    }
 }

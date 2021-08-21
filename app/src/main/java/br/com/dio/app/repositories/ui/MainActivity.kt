@@ -1,16 +1,17 @@
 package br.com.dio.app.repositories.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import br.com.dio.app.repositories.R
 import br.com.dio.app.repositories.core.createDialog
 import br.com.dio.app.repositories.core.createProgressDialog
 import br.com.dio.app.repositories.core.hideSoftKeyboard
-import br.com.dio.app.repositories.data.model.Repo
 import br.com.dio.app.repositories.databinding.ActivityMainBinding
 import br.com.dio.app.repositories.presentation.MainViewModel
 import br.com.dio.app.repositories.presentation.SecondViewModel
@@ -22,8 +23,8 @@ class MainActivity : AppCompatActivity(),
 
     private val dialog by lazy { createProgressDialog() }
     private val viewModel by viewModel<MainViewModel>()
-    private val viewModel2 by viewModel<SecondViewModel>()
-    private val adapter by lazy { RepoListAdapter() }
+    //private val viewModel2 by viewModel<SecondViewModel>()
+    private val adapter by lazy { RepoListAdapter(this) }
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,18 +52,24 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
-        viewModel2.owner.observe(this){
+        viewModel.owner.observe(this){
             when(it){
-                SecondViewModel.State.Loading -> dialog.show()
-                is SecondViewModel.State.Error -> {
+                MainViewModel.State2.Loading -> dialog.show()
+                is MainViewModel.State2.Error -> {
                     createDialog {
                         setMessage(it.error.message)
                     }.show()
                     dialog.dismiss()
                 }
-                is SecondViewModel.State.Success -> {
+                is MainViewModel.State2.Success -> {
                     dialog.dismiss()
-                    binding.chipGithub.text = it.owner.htmlURL
+                    val htmlURL = it.owner.htmlURL
+                    binding.chipGithub.text = "go to github - "+ it.owner.htmlURL
+                    binding.chipGithub.visibility = View.VISIBLE
+                    binding.chipGithub.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(htmlURL))
+                        startActivity(intent)
+                    }
                     Glide.with(binding.root.context)
                         .load(it.owner.avatarURL).into(binding.ivOwner)
                     binding.tvOwnerName.text = it.owner.name
@@ -86,7 +93,7 @@ class MainActivity : AppCompatActivity(),
 
         query?.let {
             viewModel.getRepoList(it)
-            viewModel2.getUserInfos(it)
+            viewModel.getUserInfos(it)
         }
 
         binding.root.hideSoftKeyboard()
