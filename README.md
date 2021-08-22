@@ -11,4 +11,4 @@
 * Foi criado um novo UseCase;
 * Foi alterado a interface RepoRepository adicionando uma função que pega as informações de perfil do usuário.
 
-
+![imagem da tela do app github repositories](https://github.com/alissonrangel/DIO-app-github-repositories-android-kotlin/blob/main/app/src/main/res/drawable/tela_app_repositories.png?raw=true)
